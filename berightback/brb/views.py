@@ -9,38 +9,51 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import timedelta
 from .models import Away, User
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from .utils import auto_off
 
 
 # Create your views here.
 def index(request):
 
     data = Away.objects.all()[0]
-    print("Current Data", data)
     user = request.user
-    current_time = timezone.now()
-    print("time NOW:", current_time)
-    status = data.active
+    current_time = timezone.localtime(timezone.now())
+    # Check if there user has forgotten to remove Away-status
+    if data.active:
+        auto_off(data)
 
     if request.method == "POST":
+        # User Reset
         if 'reset' in request.POST:
             data.active = False
             data.save()
-            print("Data now False")
             return render(request, 'brb/index.html', {
                 "user": user,
                 "time": current_time,
                 "status": data.active,
             })
+        # User Post request
         else:
             reason = request.POST["reason"]
-            hours = int(request.POST["hour"])
-            minutes = int(request.POST["minute"])
-            print("In post", hours, type(hours), minutes, type(minutes))
+            hours = request.POST["hour"]
+            minutes = request.POST["minute"]
 
-            if hours > 0 and hours < 24 and minutes >= 0 and minutes < 60:
+            if not hours:
+                hours = 0
+            else:
+                hours = int(hours)
+            if not minutes:
+                minutes = 0
+            else:
+                minutes = int(minutes)
+            
+            if hours >= 0 and hours < 24 and minutes >= 0 and minutes < 60:
                 data.reason = reason
                 data.return_time = current_time + timedelta(hours=hours, minutes=minutes)
                 data.active = True
+                data.creation_time = current_time
                 data.save()
             
                 return render(request, 'brb/index.html', {
@@ -55,11 +68,10 @@ def index(request):
                 "message": "Input Error, Try Again!",
                 "user": user,
                 "time": str(current_time),
-                "status": status,
+                "status": data.active,
                 })
-
+    # GET requests
     else:    
-
         return render(request, 'brb/index.html', {
             "user": user,
             "time": current_time,
@@ -117,9 +129,20 @@ def register_view(request):
     else:
         return render(request, "brb/register.html")
 
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def api(request):
+
+    away = Away.objects.all()[0]
+    # Check if there user has forgotten to remove Away-status
+    if away.active:
+        auto_off(away)
+
     if request.method == 'GET':
-        away = Away.objects.all()
-        serializer = AwaySerializer(Away, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        # Active Status
+        if away.active:
+            serializer = AwaySerializer(away, many=False)
+            return JsonResponse(serializer.data, safe=False)
+        # No active Status
+        else:
+            return HttpResponse(None)
