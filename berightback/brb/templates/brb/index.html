@@ -1,0 +1,61 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Be Right Back{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'brb/styles.css' %}" rel="stylesheet">
+        
+    </head>
+    <body>
+        <div class="container">
+            <h1>Be Right Back</h1>
+            <div>
+                {% if user.is_authenticated %}
+                    Hi! <strong>{{ user }} </strong>
+                    </br>
+                    Time now: {{ time|date:'Y/m/d H:i' }}</br>
+                    {% if status %}
+                        Active Away Status:  <strong>Yes</strong> <br>
+                        Current Reason: {{ data.reason }} <br>
+                        Estimated Return: <strong>{{ data.return_time|date:'H:i' }} </strong><br>
+                        <form action="{% url 'startpage' %}" method="post">
+                            {% csrf_token %}
+                            <input name="reset" class="btn btn-secondary" type="submit" value="Reset">
+                        </form>
+                    {% else %}
+                        Active Away Status: <strong>No</strong>
+                   {% endif %}
+                   <strong>{{ message }}</strong>
+                   <form action="{% url 'startpage' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" autofocus type="text" name="reason" placeholder="Reason">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="number" name="hour" placeholder="Hour">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="number" name="minute" placeholder="Minute">
+                    </div>
+                    <input name="newdata" class="btn btn-primary" type="submit" value="Submit">
+                </form>
+
+
+                    </br></br>
+                    <a href={% url 'logout' %}>Logout</a>
+                {% else %}
+                    Not signed in.</br>
+                    <a href={% url 'login' %}>Login</a></br>
+                    <a href={% url 'register' %}>Register</a></br>
+                {% endif %}
+            </div>
+        </div>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
