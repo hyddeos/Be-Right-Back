@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import AbstractUser
-from tkinter import CASCADE
+#from tkinter import CASCADE
 
 # Create your models here.
 
