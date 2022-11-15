@@ -1,0 +1,12 @@
+body{
+    position: relative;
+    background-color: #0d1b2a;
+    min-height: 100%;
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.container{
+    padding: 1em;
+}
