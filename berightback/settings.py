@@ -43,7 +43,7 @@ if socket.gethostname()==env("localcomp"):
     print("** Using local Settings.py **")
 else:
 # PRODUCTION / LIVE  SETTINGS
-    DEBUG = False
+    DEBUG = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = False
