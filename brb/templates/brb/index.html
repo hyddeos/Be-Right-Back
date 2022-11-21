@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -48,23 +47,21 @@
                         {% if status %}<h3>Update Away Status</h3>{% else %} <h3>New Away Status</h3>{% endif %}</br>                        
                         <form action="{% url 'startpage' %}" method="post">
                         {% csrf_token %} 
-                                <div class="form-group text-left">
-                                    <label for="reason" class="form-label">What reason?</label>   
-                                    <input class="form-control" autofocus type="text" name="reason" placeholder="Reason (Can be empty)">
-                                </div>
-                                <div class="form-group text-left">
-                                    <label for="hour" class="form-label">How many hours?</label>  
-                                    <input class="form-control" type="number" name="hour" placeholder="Hour" min="1" max="8">
-                                </div>
-                                <div class="form-group text-left">
-                                    <label for="minute" class="form-label">How many minutes?</label>  
-                                    <input class="form-control" type="number" name="minute" placeholder="Minute" min="0" max="60">
-                                </div>
-                               
-                                <input name="newdata" class="btn btn-primary" type="submit" value="Submit"></br>
+                            <div class="form-group text-left">
+                                <label for="reason" class="form-label">What reason?</label>   
+                                <input class="form-control" autofocus type="text" name="reason" placeholder="Reason (Can be empty)">
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="hour" class="form-label">How many hours?</label>  
+                                <input class="form-control" type="number" name="hour" placeholder="Hour" min="1" max="8">
+                            </div>
+                            <div class="form-group text -left">
+                                <label for="minute" class="form-label">How many minutes?</label>  
+                                <input class="form-control" type="number" name="minute" placeholder="Minute" min="0" max="60">
+                            </div>                               
+                            <input name="newdata" class="btn btn-primary" type="submit" value="Submit"></br>
                         </form>
                     </div>
-
                     </br></br>
                     <a href={% url 'logout' %}>Logout</a>
                 {% else %}

@@ -16,7 +16,6 @@ from .utils import auto_off
 
 # Create your views here.
 def index(request):
-
     
     data = Away.objects.all()[0]
     user = request.user

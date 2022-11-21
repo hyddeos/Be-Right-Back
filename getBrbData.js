@@ -36,6 +36,5 @@
                 console.log("Data is False");
             }
         }
-
     }
     fetchData();
