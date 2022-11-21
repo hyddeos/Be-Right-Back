@@ -9,7 +9,7 @@ Explore
 @hyddeos 
 hyddeos
 /
-Books-Stats-From-Goodreads
+
 Public
 Code
 Issues
@@ -20,7 +20,7 @@ Wiki
 Security
 Insights
 Settings
-Books-Stats-From-Goodreads/.gitignore
+
 @hyddeos
 hyddeos requirements file added
 Latest commit 0cbde91 8 days ago
@@ -160,3 +160,4 @@ dmypy.json
 
 # Own 
 eget.txt
+db.sqlite3
