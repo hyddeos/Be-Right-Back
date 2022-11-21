@@ -9,8 +9,6 @@ def auto_off(object):
     safety_time = 1 # How many hours to wait after estimated Return_time has pasted
     current_datetime = timezone.localtime(timezone.now())
     remove_time = object.return_time + timedelta(hours=safety_time)
-    print("curr", current_datetime)
-    print("crea", object.creation_time.date())
     
     if current_datetime > remove_time or current_datetime.date()!= object.creation_time.date():
         object.active = False
