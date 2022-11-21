@@ -103,6 +103,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("startpage"))
 
+""" # Dont need Register at this moment
 def register_view(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -128,6 +129,7 @@ def register_view(request):
         return HttpResponseRedirect(reverse("startpage"))
     else:
         return render(request, "brb/register.html")
+"""
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])

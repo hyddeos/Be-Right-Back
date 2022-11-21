@@ -19,6 +19,11 @@ Django==4.1.3
 django-adaptors==0.2.5
 django-cors-headers==3.13.0
 django-environ==0.9.0
+<<<<<<< HEAD
+djangorestframework==3.14.0
+pytz==2022.6
+sqlparse==0.4.3
+=======
 django-filter==22.1
 djangorestframework==3.13.1
 filelock==3.0.12
@@ -77,3 +82,4 @@ urllib3==1.25.8
 virtualenv==20.0.17
 whitenoise==6.2.0
 zipp==1.0.0
+>>>>>>> main

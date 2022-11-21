@@ -33,7 +33,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
-if socket.gethostname()==env("localcomp"):
+if socket.gethostname()==env("localcomp") or socket.gethostname()==env("localcomp2"):
 # LOCAL SETTINGS
     DEBUG = True
     SESSION_COOKIE_SECURE = False
