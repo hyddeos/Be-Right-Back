@@ -17,6 +17,7 @@ from .utils import auto_off
 # Create your views here.
 def index(request):
 
+    
     data = Away.objects.all()[0]
     user = request.user
     current_time = timezone.localtime(timezone.now())
@@ -133,10 +134,13 @@ def register_view(request):
 @permission_classes([IsAuthenticatedOrReadOnly])
 def api(request):
 
-    away = Away.objects.all()[0]
-    # Check if there user has forgotten to remove Away-status
-    if away.active:
-        auto_off(away)
+    if Away.objects.all()[0]:
+        away = Away.objects.all()[0]
+        # Check if there user has forgotten to remove Away-status
+        if away.active:
+            auto_off(away)
+    else:
+        return HttpResponse("Error, no object found")
 
     if request.method == 'GET':
         # Active Status
