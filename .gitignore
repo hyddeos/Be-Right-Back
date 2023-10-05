@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@hyddeos 
-hyddeos
-/
-
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-
-@hyddeos
-hyddeos requirements file added
-Latest commit 0cbde91 8 days ago
- History
- 1 contributor
-136 lines (111 sloc)  1.81 KB
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -89,6 +59,7 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3-journal
+db.sqlite3
 *.pyc
 
 # Flask stuff:
@@ -160,4 +131,3 @@ dmypy.json
 
 # Own 
 eget.txt
-db.sqlite3
