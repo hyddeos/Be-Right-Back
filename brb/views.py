@@ -125,8 +125,27 @@ def api(request):
         # No active Status
         else:
             return HttpResponse(None)
+        
 
 # Setup functions down below.
+
+
+def create_superuser_view(request):
+    UserModel = get_user_model()
+    load_dotenv()
+    status_msg = "Already exists"
+    print("Running Superuser check")
+    if not UserModel.objects.filter(username=os.getenv("SUPERUSER_USER")).exists():
+        user = UserModel.objects.create_user(
+            os.getenv("SUPERUSER_USER"), password=os.getenv("SUPERUSER_PASSWORD"))
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+        status_msg = "SU Created"
+
+    return HttpResponse(status_msg)
+
+
 """ # Dont need Register at this moment
 def register_view(request):
     if request.method == "POST":
@@ -155,22 +174,6 @@ def register_view(request):
         return render(request, "brb/register.html")
 """
 
-"""
-def superuser_view(request):
-    UserModel = get_user_model()
-    load_dotenv()
-    status_msg = "Already exists"
-    print("Running Superuser check")
-    if not UserModel.objects.filter(username=os.getenv("SUPERUSER_USER")).exists():
-        user = UserModel.objects.create_user(
-            os.getenv("SUPERUSER_USER"), password=os.getenv("SUPERUSER_PASSWORD"))
-        user.is_superuser = True
-        user.is_staff = True
-        user.save()
-        status_msg = "SU Created"
-
-    return HttpResponse(status_msg)
-"""
 
 
 
