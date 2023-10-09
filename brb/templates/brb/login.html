@@ -1,11 +1,8 @@
 {% extends "brb/layout.html" %}
 
 {% block body %}
-<div class="container-xl    ">
-    <h2>Login</h2>
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+<div class="container-xl mt-4">
+    <h2 class="display-2 ">Login</h2>
     <div class="row justify-content-center">
         <div class="container-xl">
             <form action="{% url 'login' %}" method="post">
@@ -16,7 +13,10 @@
                 <div class="form-outline mb-4">
                     <input class="form-control" type="password" name="password" placeholder="Password">
                 </div>
-                <input class="btn btn-primary btn-block" type="submit" value="Login">
+                {% if message %}
+                <div><h4 class="display-5 p-2 text-danger">{{ message }}</h4></div>
+            {% endif %}
+                <input class="btn btn-primary btn-block p-4" type="submit" value="Login">
             </form>
         </div>
     </div>

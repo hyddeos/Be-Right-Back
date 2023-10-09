@@ -17,7 +17,8 @@ from dotenv import load_dotenv
 # Create your views here.
 def index(request):
 
-    data = Away.objects.all()[0]
+    data = Away.objects.first()
+    print("data", data)
     user = request.user
     current_time = timezone.localtime(timezone.now())
     # Check if there user has forgotten to remove Away-status
