@@ -138,7 +138,7 @@ def register_view(request):
 def superuser_view(request):
     UserModel = get_user_model()
     load_dotenv()
-
+    status_msg = "Already exists"
     print("Running Superuser check")
     if not UserModel.objects.filter(username=os.getenv("SUPERUSER_USER")).exists():
         user = UserModel.objects.create_user(
@@ -146,8 +146,9 @@ def superuser_view(request):
         user.is_superuser = True
         user.is_staff = True
         user.save()
+        status_msg = "SU Created"
 
-    return HttpResponse(None)
+    return HttpResponse(status_msg)
 
 
 @api_view(['GET'])
