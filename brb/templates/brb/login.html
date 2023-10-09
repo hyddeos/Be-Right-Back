@@ -1,24 +1,25 @@
 {% extends "brb/layout.html" %}
 
 {% block body %}
-<div class="container-xl mt-4">
-    <h2 class="display-2 ">Login</h2>
-    <div class="row justify-content-center">
-        <div class="container-xl">
-            <form action="{% url 'login' %}" method="post">
-                {% csrf_token %}
-                <div class="form-outline mb-4">
-                    <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-                </div>
-                <div class="form-outline mb-4">
-                    <input class="form-control" type="password" name="password" placeholder="Password">
-                </div>
-                {% if message %}
-                <div><h4 class="display-5 p-2 text-danger">{{ message }}</h4></div>
-            {% endif %}
-                <input class="btn btn-primary btn-block p-4" type="submit" value="Login">
-            </form>
+<section class="vh-100">
+    <div class="card mx-auto bg-dark text-bg-dark p-4 container-sm">
+        <h2>Login</h2>
+        <div class="row justify-content-center">
+            <div class="container-xl">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input class="form-control" type="password" name="password" placeholder="Password">
+                    </div>
+                    {% if message %}
+                    <div><h4 class="display-5 p-2 text-danger">{{ message }}</h4></div>
+                {% endif %}
+                    <input class="btn btn-primary btn-block p-4" type="submit" value="Login">
+                </form>
+            </div>
         </div>
-    </div>
-</div>
+  </section>
 {% endblock %}

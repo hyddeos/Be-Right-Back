@@ -105,7 +105,28 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("startpage"))
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def api(request):
 
+    if Away.objects.all()[0]:
+        away = Away.objects.all()[0]
+        # Check if there user has forgotten to remove Away-status
+        if away.active:
+            auto_off(away)
+    else:
+        return HttpResponse("Error, no object found")
+
+    if request.method == 'GET':
+        # Active Status
+        if away.active:
+            serializer = AwaySerializer(away, many=False)
+            return JsonResponse(serializer.data, safe=False)
+        # No active Status
+        else:
+            return HttpResponse(None)
+
+# Setup functions down below.
 """ # Dont need Register at this moment
 def register_view(request):
     if request.method == "POST":
@@ -134,7 +155,7 @@ def register_view(request):
         return render(request, "brb/register.html")
 """
 
-
+"""
 def superuser_view(request):
     UserModel = get_user_model()
     load_dotenv()
@@ -149,25 +170,7 @@ def superuser_view(request):
         status_msg = "SU Created"
 
     return HttpResponse(status_msg)
+"""
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def api(request):
 
-    if Away.objects.all()[0]:
-        away = Away.objects.all()[0]
-        # Check if there user has forgotten to remove Away-status
-        if away.active:
-            auto_off(away)
-    else:
-        return HttpResponse("Error, no object found")
-
-    if request.method == 'GET':
-        # Active Status
-        if away.active:
-            serializer = AwaySerializer(away, many=False)
-            return JsonResponse(serializer.data, safe=False)
-        # No active Status
-        else:
-            return HttpResponse(None)
