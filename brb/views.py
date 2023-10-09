@@ -1,22 +1,22 @@
+import os
 from datetime import timedelta
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from rest_framework.parsers import JSONParser
 from brb.serializers import AwaySerializer
-from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import timedelta
-from .models import Away, User
+from .models import Away
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .utils import auto_off
+from dotenv import load_dotenv
 
 
 # Create your views here.
 def index(request):
-    
+
     data = Away.objects.all()[0]
     user = request.user
     current_time = timezone.localtime(timezone.now())
@@ -48,30 +48,31 @@ def index(request):
                 minutes = 0
             else:
                 minutes = int(minutes)
-            
+
             if hours >= 0 and hours < 24 and minutes >= 0 and minutes < 60:
                 data.reason = reason
-                data.return_time = current_time + timedelta(hours=hours, minutes=minutes)
+                data.return_time = current_time + \
+                    timedelta(hours=hours, minutes=minutes)
                 data.active = True
                 data.creation_time = current_time
                 data.save()
-            
+
                 return render(request, 'brb/index.html', {
-                "user": user,
-                "time": current_time,
-                "status": data.active,
-                "data": data,
-            })
+                    "user": user,
+                    "time": current_time,
+                    "status": data.active,
+                    "data": data,
+                })
             else:
                 print("Input Check Failed")
                 return render(request, "brb/index.html", {
-                "message": "Input Error, Try Again!",
-                "user": user,
-                "time": str(current_time),
-                "status": data.active,
+                    "message": "Input Error, Try Again!",
+                    "user": user,
+                    "time": str(current_time),
+                    "status": data.active,
                 })
     # GET requests
-    else:    
+    else:
         return render(request, 'brb/index.html', {
             "user": user,
             "time": current_time,
@@ -103,6 +104,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("startpage"))
 
+
 """ # Dont need Register at this moment
 def register_view(request):
     if request.method == "POST":
@@ -130,6 +132,22 @@ def register_view(request):
     else:
         return render(request, "brb/register.html")
 """
+
+
+def superuser_view(request):
+    UserModel = get_user_model()
+    load_dotenv()
+
+    print("Running Superuser check")
+    if not UserModel.objects.filter(username=os.getenv("SUPERUSER_USER")).exists():
+        user = UserModel.objects.create_user(
+            os.getenv("SUPERUSER_USER"), password=os.getenv("SUPERUSER_PASSWORD"))
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+
+    return HttpResponse(None)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])

@@ -1,7 +1,6 @@
 {% extends "brb/layout.html" %}
 
 {% block body %}
-    <h1>Be Right Back</h1>
     <div class="w-100 p-4">
         {% if user.is_authenticated %}
             Hi! <strong>{{ user }} </strong>
@@ -55,8 +54,26 @@
             </br></br>
             <a href={% url 'logout' %}>Logout</a>
         {% else %}
-            Not signed in.</br>
-            <a href={% url 'login' %}>Login</a></br>
+            <div class="container-xl">
+                <h2>Login</h2>
+                {% if message %}
+                    <div>{{ message }}</div>
+                {% endif %}
+                <div class="row justify-content-center">
+                    <div class="container-xl">
+                        <form action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-outline mb-4">
+                                <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+                            </div>
+                            <div class="form-outline mb-4">
+                                <input class="form-control" type="password" name="password" placeholder="Password">
+                            </div>
+                            <input class="btn btn-primary btn-block" type="submit" value="Login">
+                        </form>
+                    </div>
+                </div>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

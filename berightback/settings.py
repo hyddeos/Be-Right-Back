@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+
 from pathlib import Path
-import socket
 import os
 from dotenv import load_dotenv
 
@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
-if socket.gethostname() == os.getenv("localcomp") or socket.gethostname() == os.getenv("localcomp2"):
+if os.getenv("ENVIROMENT") == "local":
     # LOCAL SETTINGS
     DEBUG = True
     SESSION_COOKIE_SECURE = False
