@@ -6,6 +6,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     # path('register/', views.register_view, name="register"), # No need for this at this moment
-    # path('temp/', views.superuser_view, name='temp'),
+    path('createsu/', views.create_superuser_view, name='createsu'),
     path('api/', views.api, name='api'),
 ]
