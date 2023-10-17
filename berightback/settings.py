@@ -15,20 +15,17 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
 # Initialise environment variables
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
-
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
@@ -42,7 +39,7 @@ if os.getenv("ENVIROMENT") == "local":
     print("** Using local Settings.py **")
 else:
     # PRODUCTION / LIVE  SETTINGS
-    DEBUG = False
+    DEBUG = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = False
@@ -57,7 +54,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'brb',
-    'rest_framework',
     'corsheaders',
 ]
 
@@ -72,21 +68,24 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        'rest_framework.renderers.JSONRenderer',
-    ]
-}
-
-CORS_ORIGIN_WHITELIST = os.getenv("CORS_ORIGIN_WHITELIST").split(",")
-
-CORS_ALLOWED_ORIGIN_REGEXES = os.getenv(
-    "CORS_ALLOWED_ORIGIN_REGEXES").split(",")
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4321",  # Add your frontend origin here
+    # Add other allowed origins as needed
+]
+# CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
 
 CORS_ALLOW_HEADERS = [
     'accept',
@@ -99,6 +98,7 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+CORS_ALLOW_ALL_ORIGINS: True
 
 ROOT_URLCONF = 'berightback.urls'
 
@@ -125,13 +125,25 @@ AUTH_USER_MODEL = 'brb.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv("ENVIROMENT") == "local":
+    # LOCAL SETTINGS
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            "NAME": os.environ.get('DB_NAME'),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASSWORD"),
+            "HOST": os.environ.get("DB_HOST"),
+            "PORT": os.environ.get("DB_PORT"),
+        }
+    }
 
 
 # Password validation
