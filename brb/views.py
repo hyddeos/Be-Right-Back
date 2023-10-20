@@ -18,7 +18,6 @@ from dotenv import load_dotenv
 def index(request):
 
     data = Away.objects.first()
-    print("data", data)
     user = request.user
     current_time = timezone.localtime(timezone.now())
     # Check if there user has forgotten to remove Away-status
@@ -105,6 +104,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("startpage"))
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def api(request):
@@ -125,7 +125,7 @@ def api(request):
         # No active Status
         else:
             return HttpResponse(None)
-        
+
 
 # Setup functions down below.
 
@@ -173,7 +173,3 @@ def register_view(request):
     else:
         return render(request, "brb/register.html")
 """
-
-
-
-
