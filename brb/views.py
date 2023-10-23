@@ -12,6 +12,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .utils import auto_off
 from dotenv import load_dotenv
+from rest_framework.response import Response
+from rest_framework import status
 
 
 # Create your views here.
@@ -123,9 +125,8 @@ def api(request):
             serializer = AwaySerializer(away, many=False)
             return JsonResponse(serializer.data, safe=False)
         # No active Status
-        else:
-            return HttpResponse(None)
-
+        content = {'please move along': 'nothing to see here'}
+        return Response(content, status=status.HTTP_204_NO_CONTENT)
 
 # Setup functions down below.
 
