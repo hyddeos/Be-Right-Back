@@ -117,7 +117,7 @@ def api(request):
         if away.active:
             auto_off(away)
     else:
-        return HttpResponse("Error, no object found")
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     if request.method == 'GET':
         # Active Status
@@ -125,8 +125,7 @@ def api(request):
             serializer = AwaySerializer(away, many=False)
             return JsonResponse(serializer.data, safe=False)
         # No active Status
-        content = {'please move along': 'nothing to see here'}
-        return Response(content, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Setup functions down below.
 

@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from brb.models import Away
 
 
 class AwaySerializer(serializers.Serializer):
